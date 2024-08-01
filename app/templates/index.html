@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Room Availability</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(to right, #f0f4f7, #d9e2ec);
+            padding: 20px;
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-link {
+            color: white;
+            text-decoration: none;
+        }
+        .btn-link:hover {
+            text-decoration: underline;
+        }
+        h1 {
+            color: #007bff;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        async function fetchAvailability() {
+            try {
+                const response = await fetch('/api/availability');
+                const data = await response.json();
+
+                const container = document.getElementById('availability-container');
+                container.innerHTML = '';
+
+                data.availability.forEach((room, index) => {
+                    const availableDates = room.availability.filter(entry => entry.is_available).map(entry => entry.date);
+                    const availableText = availableDates.length ? `Available Dates: ${availableDates.join(', ')}` : 'No Available Dates';
+                    const roomHeader = `Room: ${room.name} - ${availableText}`;
+
+                    const roomDiv = document.createElement('div');
+                    roomDiv.classList.add('room', 'card', 'mb-3');
+
+                    roomDiv.innerHTML = `
+                    <div class="card-header" id="heading${index}">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapse${index}" aria-expanded="true" aria-controls="collapse${index}">
+                                ${roomHeader}
+                            </button>
+                        </h5>
+                    </div>
+                    <div id="collapse${index}" class="collapse" aria-labelledby="heading${index}" data-parent="#availability-container">
+                        <div class="card-body">
+                            ${room.availability.map(entry => `
+                                <p class="card-text">Date: ${entry.date} - Available: ${entry.is_available ? 'Yes' : 'No'} - Price: $${entry.price}</p>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                    container.appendChild(roomDiv);
+                });
+
+                const lastCheckedDiv = document.getElementById('last-checked');
+                if (lastCheckedDiv) {
+                    lastCheckedDiv.textContent = `Last checked: ${new Date(data.last_checked).toLocaleString()}`;
+                }
+
+                const lastRefreshedDiv = document.getElementById('last-refreshed');
+                if (lastRefreshedDiv) {
+                    lastRefreshedDiv.textContent = `Last refreshed: ${new Date().toLocaleString()}`;
+                }
+            } catch (error) {
+                console.error('Error fetching availability:', error);
+            }
+        }
+
+        window.onload = fetchAvailability;
+        setInterval(fetchAvailability, 60000);
+    </script>
+</head>
+<body>
+<h1 class="text-center">Room Availability</h1>
+<div id="availability-container" class="accordion"></div>
+<div id="last-checked" class="text-muted mt-2"></div>
+<div id="last-refreshed" class="text-muted mt-2"></div>
+</body>
+</html>

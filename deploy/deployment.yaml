@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: room-checker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: room-checker
+  template:
+    metadata:
+      labels:
+        app: room-checker
+    spec:
+      containers:
+        - name: room-checker
+          image: dukeman/room-checker:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000  # Expose Flask default port
+          env:
+            - name: DEBUG
+              value: "true"
+            - name: TRACE
+              value: "false"
+            - name: INTERVAL
+              value: "300"  # Check every 5 minutes
+            - name: SNS_TOPIC_ARN
+              value: arn:aws:sns:us-east-1:370531405201:truckee
+            - name: SNS_ENABLED
+              value: "true"
+          envFrom:
+            - secretRef:
+                name: aws-credentials

@@ -1,0 +1,15 @@
+apiVersion: skaffold/v2beta19
+kind: Config
+metadata:
+  name: room-checker
+build:
+  artifacts:
+    - image: dukeman/room-checker
+      context: .
+      docker:
+        dockerfile: Dockerfile
+deploy:
+  kubectl:
+    manifests:
+      - deploy/deployment.yaml
+      - deploy/service.yaml

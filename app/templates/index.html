@@ -14,13 +14,16 @@
         .theme-selector-container {
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-end; /* Aligns the theme picker to the right */
         }
         .theme-selector-container label, .theme-selector-container select {
             margin-bottom: 0;
         }
-        .align-items-center {
-            align-items: center;
+        .text-left-md {
+            text-align: left; /* Left align on medium and larger screens */
+        }
+        .text-center-xs {
+            text-align: center; /* Center align on smaller screens */
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -105,19 +108,17 @@
 
 <!-- Grid container for timestamps and theme selector -->
 <div class="container info-container mt-3">
-    <div class="row justify-content-center align-items-center">
-        <div class="col-md-4 col-12 text-center mb-2" id="last-checked"></div>
-        <div class="col-md-4 col-12 text-center mb-2">
-            <form class="form-inline justify-content-center theme-selector-container">
-                <label class="mr-2" for="theme-selector">Select Theme:</label>
-                <select class="form-control" id="theme-selector" onchange="changeTheme(this.value)">
-                    <option value="default-theme">Default</option>
-                    <option value="dark-theme">Dark</option>
-                    <option value="green-theme">Green</option>
-                </select>
-            </form>
+    <div class="row align-items-center">
+        <div class="col-md-4 col-12 text-left-md text-center-xs mb-2" id="last-checked"></div>
+        <div class="col-md-4 col-12 text-left-md text-center-xs mb-2" id="last-refreshed"></div>
+        <div class="col-md-4 col-12 theme-selector-container mb-2">
+            <label class="mr-2" for="theme-selector">Select Theme:</label>
+            <select class="form-control" id="theme-selector" onchange="changeTheme(this.value)">
+                <option value="default-theme">Default</option>
+                <option value="dark-theme">Dark</option>
+                <option value="green-theme">Green</option>
+            </select>
         </div>
-        <div class="col-md-4 col-12 text-center mb-2" id="last-refreshed"></div>
     </div>
 </div>
 </body>

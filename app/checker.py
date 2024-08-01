@@ -1,6 +1,8 @@
 import requests
 import json
 from .config import desired_dates, rooms_of_interest, headers, debug, trace
+from .notifier import notify_availability
+
 
 def fetch_availability():
     desired_dates.sort()
@@ -33,6 +35,9 @@ def fetch_availability():
                                 'price': price
                             })
                             # Optional: handle notifications here or elsewhere
+                            if availability:
+                                print(f"Room {room_name} is available on {date} for ${price}")
+                                notify_availability(room_name, date, price)
                     availability_data.append(room_info)
         else:
             print(f"Error: Unexpected data format or error message: {data.get('message', 'Unknown error')}")

@@ -1,0 +1,56 @@
+/* Default Theme */
+body.default-theme {
+    font-family: 'Roboto', sans-serif;
+    background: #f8f9fa;
+    color: #212529;
+}
+body.default-theme .card-header {
+    background-color: #007bff;
+    color: white;
+}
+body.default-theme h1 {
+    color: #007bff;
+}
+body.default-theme .btn-link {
+    color: #ffffff; /* Ensure links are visible on blue background */
+}
+
+/* Dark Theme */
+body.dark-theme {
+    font-family: 'Roboto', sans-serif;
+    background: #343a40;
+    color: #f8f9fa;
+}
+body.dark-theme .card-header {
+    background-color: #495057;
+    color: white;
+}
+body.dark-theme h1 {
+    color: #f8f9fa;
+}
+body.dark-theme a {
+    color: #17a2b8;
+}
+body.dark-theme .btn-link {
+    color: #17a2b8; /* Light blue links for dark background */
+}
+
+/* Green Theme */
+body.green-theme {
+    font-family: 'Roboto', sans-serif;
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+body.green-theme .card-header {
+    background-color: #388e3c;
+    color: white;
+}
+body.green-theme h1 {
+    color: #2e7d32;
+}
+body.green-theme a {
+    color: #2e7d32;
+}
+body.green-theme .btn-link {
+    color: #ffffff; /* White links for green background */
+}

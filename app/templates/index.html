@@ -6,31 +6,39 @@
     <title>Room Availability</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/themes.css') }}">
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(to right, #f0f4f7, #d9e2ec);
-            padding: 20px;
+        .info-container {
+            padding-top: 20px;
         }
-        .card-header {
-            background-color: #007bff;
-            color: white;
+        .theme-selector-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .btn-link {
-            color: white;
-            text-decoration: none;
+        .theme-selector-container label, .theme-selector-container select {
+            margin-bottom: 0;
         }
-        .btn-link:hover {
-            text-decoration: underline;
-        }
-        h1 {
-            color: #007bff;
+        .align-items-center {
+            align-items: center;
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
+        function changeTheme(theme) {
+            document.body.className = theme;
+            localStorage.setItem('selectedTheme', theme);
+            document.getElementById('theme-selector').value = theme;
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const savedTheme = localStorage.getItem('selectedTheme') || 'default-theme';
+            document.body.className = savedTheme;
+            document.getElementById('theme-selector').value = savedTheme;
+        });
+
         async function fetchAvailability() {
             try {
                 const response = await fetch('/api/availability');
@@ -58,7 +66,7 @@
                     <div id="collapse${index}" class="collapse" aria-labelledby="heading${index}" data-parent="#availability-container">
                         <div class="card-body">
                             ${room.availability.map(entry => `
-                                <p class="card-text">Date: ${entry.date} - Available: ${entry.is_available ? 'Yes' : 'No'} - Price: $${entry.price}</p>
+                                <p class="card-text" style="color: ${entry.is_available ? 'green' : 'red'};">Date: ${entry.date} - Available: ${entry.is_available ? 'Yes' : 'No'} - Price: $${entry.price}</p>
                             `).join('')}
                         </div>
                     </div>
@@ -84,10 +92,33 @@
         setInterval(fetchAvailability, 60000);
     </script>
 </head>
-<body>
+<body class="default-theme">
 <h1 class="text-center">Room Availability</h1>
+<div id="more-info" class="text-center mt-3">
+    <p>
+        For more information and to explore the hotel's availability directly, visit
+        <a href="https://lochlevenlodge.client.innroad.com/grid" target="_blank">Loch Leven Lodge</a>.
+    </p>
+</div>
+
 <div id="availability-container" class="accordion"></div>
-<div id="last-checked" class="text-muted mt-2"></div>
-<div id="last-refreshed" class="text-muted mt-2"></div>
+
+<!-- Grid container for timestamps and theme selector -->
+<div class="container info-container mt-3">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-md-4 col-12 text-center mb-2" id="last-checked"></div>
+        <div class="col-md-4 col-12 text-center mb-2">
+            <form class="form-inline justify-content-center theme-selector-container">
+                <label class="mr-2" for="theme-selector">Select Theme:</label>
+                <select class="form-control" id="theme-selector" onchange="changeTheme(this.value)">
+                    <option value="default-theme">Default</option>
+                    <option value="dark-theme">Dark</option>
+                    <option value="green-theme">Green</option>
+                </select>
+            </form>
+        </div>
+        <div class="col-md-4 col-12 text-center mb-2" id="last-refreshed"></div>
+    </div>
+</div>
 </body>
 </html>

@@ -1,9 +1,15 @@
 import os
 
-desired_dates = ['2025-06-29', '2025-06-30', '2025-07-01', '2025-07-02', '2025-07-03', '2025-07-04', '2025-07-05']
+desired_dates = os.getenv('DESIRED_DATES', '2025-06-29,2025-06-30,2025-07-01,2025-07-02,2025-07-03,2025-07-04,2025-07-05').split(',')
 rooms_of_interest = ['Lake Front Bedroom', 'Lake Front Studio', 'Lake Front Suite', 'Lake Front Town House']
 INTERVAL = int(os.getenv('INTERVAL', 3600))
 SNS_ENABLED = os.getenv('SNS_ENABLED', 'false').lower() == 'true'
+MQTT_ENABLED = True
+mqtt_broker = 'mqtt.leetserve.com'
+mqtt_port = 1883
+mqtt_topic = 'home/room-check/alerts'
+PORT = int(os.getenv('PORT', 5000))
+
 
 headers = {
     'accept': 'application/json, text/plain, */*',

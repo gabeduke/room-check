@@ -53,7 +53,7 @@
                 data.availability.forEach((room, index) => {
                     const availableDates = room.availability.filter(entry => entry.is_available).map(entry => entry.date);
                     const availableText = availableDates.length ? `Available Dates: ${availableDates.join(', ')}` : 'No Available Dates';
-                    const roomHeader = `Room: ${room.name} - ${availableText}`;
+                    const roomHeader = `${room.name} - ${availableText}`;
 
                     const roomDiv = document.createElement('div');
                     roomDiv.classList.add('room', 'card', 'mb-3');

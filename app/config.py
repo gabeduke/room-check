@@ -4,10 +4,10 @@ desired_dates = os.getenv('DESIRED_DATES', '2025-06-29,2025-06-30,2025-07-01,202
 rooms_of_interest = ['Lake Front Bedroom', 'Lake Front Studio', 'Lake Front Suite', 'Lake Front Town House']
 INTERVAL = int(os.getenv('INTERVAL', 3600))
 SNS_ENABLED = os.getenv('SNS_ENABLED', 'false').lower() == 'true'
-MQTT_ENABLED = True
+MQTT_ENABLED = os.getenv('MQTT_ENABLED', 'false').lower() == 'true'
 mqtt_broker = 'mqtt.leetserve.com'
 mqtt_port = 1883
-mqtt_topic = 'home/room-check/alerts'
+mqtt_topic = 'home/general/alerts'
 PORT = int(os.getenv('PORT', 5000))
 
 

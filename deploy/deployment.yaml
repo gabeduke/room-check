@@ -27,6 +27,8 @@ spec:
               value: "300"  # Check every 5 minutes
             - name: SNS_TOPIC_ARN
               value: arn:aws:sns:us-east-1:370531405201:truckee
+            - name: MQTT_ENABLED
+              value: "true"
             - name: SNS_ENABLED
               value: "true"
           envFrom:

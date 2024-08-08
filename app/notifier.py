@@ -52,7 +52,7 @@ def notify_availability(room_name, date, price):
             # Send MQTT notification
             if MQTT_ENABLED:
                 mqtt_client.connect(mqtt_broker, mqtt_port, 60)
-                mqtt_client.publish(mqtt_topic, message)
+                mqtt_client.publish(mqtt_topic, message, retain=True)
                 print("MQTT Notification sent")
 
             # Start cooldown period
